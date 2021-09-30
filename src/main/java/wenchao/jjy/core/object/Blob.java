@@ -31,7 +31,7 @@ public class Blob implements GitObject, Serializable {
         this.content = content;
         this.header = FORMAT + " " + content.length + "\0";
         this.hash = Hashing.sha256()
-                .hashString(header + content, StandardCharsets.UTF_8)
+                .hashBytes(ByteUtils.twoByteArrayAdd(header.getBytes(StandardCharsets.UTF_8), content))
                 .toString();
         serializableDirectory = ".git/" + "objects/" + hash.substring(0, 2);
         localName = hash.substring(2);
@@ -71,4 +71,6 @@ public class Blob implements GitObject, Serializable {
     public byte[] getCompressByte() {
         return compressByte;
     }
+
+
 }
